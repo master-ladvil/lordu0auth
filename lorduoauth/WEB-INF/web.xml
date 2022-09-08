@@ -15,4 +15,20 @@
 		<servlet-name>Elloauth</servlet-name>
 		<url-pattern>/Elloauth</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>Consent</servlet-name>
+		<servlet-class>Consent</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>Consent</servlet-name>
+		<url-pattern>/Consent</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>oauthlogin</servlet-name>
+		<servlet-class>oauthlogin</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>oauthlogin</servlet-name>
+		<url-pattern>/oauthlogin</url-pattern>
+	</servlet-mapping>
 </web-app>

@@ -29,6 +29,7 @@ import java.util.Base64;
 import netscape.javascript.JSObject;
 
 public class Elloauth extends HttpServlet {
+    
     public Connection con;
     public Elloauth() {
         try {
@@ -50,20 +51,22 @@ public class Elloauth extends HttpServlet {
     
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
        AuthCodeGen authob = new AuthCodeGen(); 
+       String url = null;
        String authcode = null;
-       String clientId = request.getParameter("clientid");
+       String clientId = Consent.client;
        System.out.println("clientid-> "+clientId);
-       String redirect = request.getParameter("redirect");
-       String scope = request.getParameter("scope");
+       String redirect = Consent.redirect;
+       String scope = Consent.scope;
+       //String scope = request.getParameter("scope");
        String time = String.valueOf(System.currentTimeMillis());
-       response.addHeader("Access-Control-Allow-Origin","*"); 
-		response.setContentType("text/json");
+       
 		PrintWriter out = response.getWriter();
         JSONObject jobj = new JSONObject();
         if(authob.checkdb("clientid","idsec",clientId)){
             if(authob.checkdb("scopename","scopes",scope)){
                 authcode = authob.genAuthCode(clientId+scope+redirect+time,clientId);
-                String url = redirect+"?authcode="+authcode+"&clientid="+clientId+"&scope="+scope;
+                url = redirect+"?authcode="+authcode+"&clientid="+clientId+"&scope="+scope;
+                
                 System.out.println("url---> "+url);
                 jobj.put("authcode",authcode);
                 jobj.put("scope",scope);
@@ -78,7 +81,10 @@ public class Elloauth extends HttpServlet {
         }
         Loggen logob = new Loggen();
         logob.addToLog("authcode", authcode, String.valueOf(System.currentTimeMillis()), clientId, "granted");
-        out.println(jobj);
+        response.addHeader("Access-Control-Allow-Origin","*"); 
+		response.setContentType("text/html");
+        response.sendRedirect(url);
+        //out.println(jobj);
     }
 
     public void doPost(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
@@ -86,6 +92,7 @@ public class Elloauth extends HttpServlet {
         String idtok = null;
         String authcode = request.getParameter("authcode");
         String clientid = request.getParameter("clientid");
+        System.out.println(clientid);
         String clientsecret = request.getParameter("clientsecret");
         String scope = request.getParameter("scope");
         String time = String.valueOf(System.currentTimeMillis());
@@ -114,7 +121,7 @@ public class Elloauth extends HttpServlet {
                     }
                     else{
                         jobj.put("error","invalid request");
-                        jobj.put("desc","invalid clientid");
+                        jobj.put("desc","invalid clientsecret");
                     }
                 }else{
                 jobj.put("error","invalid request");
