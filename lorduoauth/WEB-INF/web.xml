@@ -1,0 +1,18 @@
+<web-app>
+    <servlet>
+		<servlet-name>InitAuth</servlet-name>
+		<servlet-class>InitAuth</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>InitAuth</servlet-name>
+		<url-pattern>/InitAuth</url-pattern>
+	</servlet-mapping>
+    <servlet>
+		<servlet-name>Elloauth</servlet-name>
+		<servlet-class>Elloauth</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>Elloauth</servlet-name>
+		<url-pattern>/Elloauth</url-pattern>
+	</servlet-mapping>
+</web-app>
