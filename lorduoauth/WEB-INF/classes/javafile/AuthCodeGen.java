@@ -101,8 +101,9 @@ public class AuthCodeGen {
         }catch(Exception e){
             System.out.println(e);
         }
+        System.out.println("code removed + " + token);
     }
-    public String genAuthCode(String key,String clientid){
+    public String genAuthCode(String key,String clientid,String userkey){
         
         String tok = checkdbtok("clientid", "authcode", clientid, "authcode");
         
@@ -113,7 +114,7 @@ public class AuthCodeGen {
         String time = String.valueOf(System.currentTimeMillis());
         Statement stmt;
         try{
-            String query = String.format("insert into authcode(authcode,time,clientid) values('%s','%s','%s');",authcode,time,clientid);
+            String query = String.format("insert into authcode(authcode,time,clientid,userkey) values('%s','%s','%s','%s');",authcode,time,clientid,userkey);
             stmt = con.createStatement();
             stmt.executeUpdate(query);
             return authcode;

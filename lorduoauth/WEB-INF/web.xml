@@ -16,12 +16,28 @@
 		<url-pattern>/Elloauth</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>Consent</servlet-name>
-		<servlet-class>Consent</servlet-class>
+		<servlet-name>Key</servlet-name>
+		<servlet-class>Key</servlet-class>
 	</servlet>
     <servlet-mapping>
-		<servlet-name>Consent</servlet-name>
-		<url-pattern>/Consent</url-pattern>
+		<servlet-name>Key</servlet-name>
+		<url-pattern>/Key</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Token</servlet-name>
+		<servlet-class>Token</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>Token</servlet-name>
+		<url-pattern>/Token</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Auth</servlet-name>
+		<servlet-class>Auth</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>Auth</servlet-name>
+		<url-pattern>/Auth</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>oauthlogin</servlet-name>

@@ -53,10 +53,11 @@ public class Elloauth extends HttpServlet {
        AuthCodeGen authob = new AuthCodeGen(); 
        String url = null;
        String authcode = null;
-       String clientId = Consent.client;
+       String clientId = Auth.client;
+       String userkey = oauthlogin.userkey;
        System.out.println("clientid-> "+clientId);
-       String redirect = Consent.redirect;
-       String scope = Consent.scope;
+       String redirect = Auth.redirect;
+       String scope = Auth.scope;
        //String scope = request.getParameter("scope");
        String time = String.valueOf(System.currentTimeMillis());
        
@@ -64,7 +65,7 @@ public class Elloauth extends HttpServlet {
         JSONObject jobj = new JSONObject();
         if(authob.checkdb("clientid","idsec",clientId)){
             if(authob.checkdb("scopename","scopes",scope)){
-                authcode = authob.genAuthCode(clientId+scope+redirect+time,clientId);
+                authcode = authob.genAuthCode(clientId+scope+redirect+time,clientId,userkey);
                 url = redirect+"?authcode="+authcode+"&clientid="+clientId+"&scope="+scope;
                 
                 System.out.println("url---> "+url);
@@ -106,7 +107,7 @@ public class Elloauth extends HttpServlet {
                 if(authob.checkdb("authcode","authcode" , authcode)){
                     if(authob.checkdb("clientsecret", "idsec", clientsecret)){
                         JSONObject idtokob = new JSONObject();
-                        idtokob = idob.generateJWT(clientid,scope,clientsecret);
+                        idtokob = idob.generateJWT(clientid,scope,clientsecret,authcode);
                         String status = idtokob.get("state").toString();
                         idtok = idtokob.get("idtoken").toString();
                         if(status.equals("new")){

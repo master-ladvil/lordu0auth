@@ -29,6 +29,7 @@ import java.util.Base64;
 
 public class oauthlogin extends HttpServlet{
     public static Connection con;
+    public static String userkey = null;
     public oauthlogin() {
         try {
             System.out.println("[+]inside login constructor..");
@@ -50,11 +51,12 @@ public class oauthlogin extends HttpServlet{
         Statement stmt;
         ResultSet rs = null;
         try{
-            String query = String.format("select lname from userinfo where email = '%s';",email);
+            String query = String.format("select * from userinfo where email = '%s';",email);
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
             rs.next();
             String dblname =  rs.getString("lname");
+            userkey = rs.getString("userkey");
             response.addHeader("Access-Control-Allow-Origin","*");
 			response.setContentType("text/plain");
 			PrintWriter out = response.getWriter();
