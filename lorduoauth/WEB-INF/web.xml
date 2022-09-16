@@ -47,4 +47,28 @@
 		<servlet-name>oauthlogin</servlet-name>
 		<url-pattern>/oauthlogin</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>AccessToken</servlet-name>
+		<servlet-class>AccessToken</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>AccessToken</servlet-name>
+		<url-pattern>/AccessToken</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Reservation</servlet-name>
+		<servlet-class>Reservation</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>Reservation</servlet-name>
+		<url-pattern>/Reservation</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Rooms</servlet-name>
+		<servlet-class>Rooms</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>Rooms</servlet-name>
+		<url-pattern>/Rooms</url-pattern>
+	</servlet-mapping>
 </web-app>

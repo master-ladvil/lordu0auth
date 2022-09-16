@@ -113,12 +113,12 @@ public class IdTokenGen {
         Statement stmt;
         ResultSet rs = null;
         try{
-            String query = String.format("select * from authcode where authcode = '%s';",authcode);
-            System.out.println("Quer -> "+query);
+            String query = String.format("select * from userinfo where ac = '%s';",authcode);
+            System.out.println("Query -> "+query);
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
             rs.next();
-            System.out.println("uskey -> " + rs.getString(1));
+            System.out.println("uskey -> " + rs.getString("userkey"));
             uskey = rs.getString("userkey");
             System.out.println("Userkey -> " + uskey);
         }catch(Exception e){

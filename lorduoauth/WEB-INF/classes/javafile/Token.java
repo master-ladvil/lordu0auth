@@ -29,6 +29,7 @@ public class Token extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         IdTokenGen idob = new IdTokenGen();
         String idtok = null;
+        String accesstoken = null;
         String authcode = request.getParameter("authcode");
         String clientid = request.getParameter("clientid");
         System.out.println(clientid);
@@ -41,19 +42,22 @@ public class Token extends HttpServlet {
         PrintWriter out = response.getWriter();
         AuthCodeGen authob = new AuthCodeGen();
         InitAuth keyob = new InitAuth();
+        AccessToken accessob = new AccessToken();
         try {
             if (authob.checkdb("clientid", "keys", clientid)) {
-                if (authob.checkdb("scopename", "scopes", scope)) {
-                    if (authob.checkdb("authcode", "authcode", authcode)) {
+                
+                    if (authob.checkdb("ac", "userinfo", authcode)) {
                         if (authob.checkdb("clientsecret", "keys", clientsecret)) {
                             if (keyob.verifysecret(clientid, clientsecret)) {
                                 JSONObject idtokob = new JSONObject();
-                                idtokob = idob.generateJWT(clientid, scope, clientsecret, authcode);
+                                idtokob = idob.generateJWT(clientid, "userinfo", clientsecret, authcode);
+                                accesstoken = accessob.generateAccessToken(clientid, scope, authcode);
                                 String status = idtokob.get("state").toString();
                                 idtok = idtokob.get("idtoken").toString();
                                 if (status.equals("new")) {
                                     authob.delAuthCode(clientid, "authcode", authcode);
                                 }
+                                jobj.put("accesstoken",accesstoken);
                                 jobj.put("idtoken", idtok);
                                 jobj.put("clientid", clientid);
                                 jobj.put("scope", scope);
@@ -70,10 +74,6 @@ public class Token extends HttpServlet {
                         jobj.put("desc", "invalid  authcode");
                     }
                 } else {
-                    jobj.put("error", "invalid request");
-                    jobj.put("desc", "invalid  scope");
-                }
-            } else {
                 jobj.put("error", "invalid request");
                 jobj.put("desc", "invalid clientid");
             }

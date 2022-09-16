@@ -52,7 +52,7 @@ public class oauthlogin extends HttpServlet{
         Statement stmt;
         ResultSet rs = null;
         try{
-            String query = String.format("select * from users where email = '%s';",email);
+            String query = String.format("select * from admin where email = '%s';",email);
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
             rs.next();

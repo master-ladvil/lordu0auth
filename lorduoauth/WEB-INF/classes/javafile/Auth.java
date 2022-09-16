@@ -27,6 +27,7 @@ import java.util.Base64;
 
 public class Auth extends HttpServlet{
         public static Connection con = null;
+        public static String[] scoppes = null;
         public static String scope = null;
         public static String client = null;
         public static String redirect = null;
@@ -50,14 +51,18 @@ public class Auth extends HttpServlet{
         ResultSet rs2 = null;
         try{
             String clientquery = String.format("select count(*) from keys where clientid = '%s';",clientid);
+            System.out.println("Query -> "+clientquery);
             stmt = con.createStatement();
             rs = stmt.executeQuery(clientquery);
             rs.next();
             if(rs.getString("count").equals("1")){
+                System.out.println(rs.getString("count"));
                 String query = String.format("select count(*) from scopes where scopename = '%s';",scope);
+                System.out.println("Query -> query");
                 rs2 = stmt.executeQuery(query);
                 rs2.next();
                 if(rs2.getString("count").equals("1")){
+                    System.out.println("Count -> "+rs2.getString("count"));
                     return true;
                 }else{
                     return false;
@@ -72,16 +77,26 @@ public class Auth extends HttpServlet{
     }   
     public void doGet(HttpServletRequest request,HttpServletResponse response)throws IOException,ServletException{
         scope = request.getParameter("scope");
+        scoppes = scope.split("\\.");
         client = request.getParameter("clientid");
         redirect = request.getParameter("redirect");
-        boolean auth = checkcreds(scope, client);
+        boolean auth = true;
+        for(int i = 0; i<scoppes.length;i++){
+            auth = checkcreds(scoppes[i], client);
+            System.out.println(scoppes[i] + " " + auth);
+            if(auth == false){
+                break;
+            }
+        }
+        
+        
         if(auth){
             System.out.println("client id in consent -> "+client);
             response.setContentType("text/html");
             PrintWriter out = response.getWriter();
             response.sendRedirect("http://localhost:4201/auth");
         }else{
-            response.sendRedirect("http://localhost:4201/error");
+            response.sendRedirect("http://localhost:4200/error");
         }
         
     }
