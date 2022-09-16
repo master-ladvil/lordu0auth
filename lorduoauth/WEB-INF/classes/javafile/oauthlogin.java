@@ -34,7 +34,7 @@ public class oauthlogin extends HttpServlet{
         try {
             System.out.println("[+]inside login constructor..");
             Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/elloauth", "postgres", "pwd");
+            con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/hotelreserve1_0", "postgres", "pwd");
             if (con != null) {
                 System.out.println("connection estabished");
             } else {
@@ -47,20 +47,22 @@ public class oauthlogin extends HttpServlet{
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException,ServletException{
         
         String email = request.getParameter("email");
-        String lname = request.getParameter("lname");
+        String mobile = request.getParameter("lname");
+        System.out.println("email -> "+ email + "password -> " + mobile);
         Statement stmt;
         ResultSet rs = null;
         try{
-            String query = String.format("select * from userinfo where email = '%s';",email);
+            String query = String.format("select * from users where email = '%s';",email);
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
             rs.next();
-            String dblname =  rs.getString("lname");
-            userkey = rs.getString("userkey");
+            String dbmobile =  rs.getString("mobile");
+            System.out.println("dbmobile-> "+ dbmobile);
+            userkey = rs.getString("id");
             response.addHeader("Access-Control-Allow-Origin","*");
 			response.setContentType("text/plain");
 			PrintWriter out = response.getWriter();
-            if(dblname.equals(lname)){
+            if(dbmobile.equals(mobile)){
                 out.println(1);
             }else{
                 out.println(0);

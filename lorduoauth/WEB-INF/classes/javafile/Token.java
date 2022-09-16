@@ -40,41 +40,48 @@ public class Token extends HttpServlet {
         JSONObject jobj = new JSONObject();
         PrintWriter out = response.getWriter();
         AuthCodeGen authob = new AuthCodeGen();
-        if (authob.checkdb("clientid", "idsec", clientid)) {
-            if (authob.checkdb("scopename", "scopes", scope)) {
-                if (authob.checkdb("authcode", "authcode", authcode)) {
-                    if (authob.checkdb("clientsecret", "idsec", clientsecret)) {
-                        JSONObject idtokob = new JSONObject();
-                        idtokob = idob.generateJWT(clientid, scope, clientsecret, authcode);
-                        String status = idtokob.get("state").toString();
-                        idtok = idtokob.get("idtoken").toString();
-                        if (status.equals("new")) {
-                            authob.delAuthCode(clientid, "authcode", authcode);
-                            Loggen logob = new Loggen();
-                            logob.addToLog("idtoken", idtok, String.valueOf(System.currentTimeMillis()), clientid,
-                                    "granted");
+        InitAuth keyob = new InitAuth();
+        try {
+            if (authob.checkdb("clientid", "keys", clientid)) {
+                if (authob.checkdb("scopename", "scopes", scope)) {
+                    if (authob.checkdb("authcode", "authcode", authcode)) {
+                        if (authob.checkdb("clientsecret", "keys", clientsecret)) {
+                            if (keyob.verifysecret(clientid, clientsecret)) {
+                                JSONObject idtokob = new JSONObject();
+                                idtokob = idob.generateJWT(clientid, scope, clientsecret, authcode);
+                                String status = idtokob.get("state").toString();
+                                idtok = idtokob.get("idtoken").toString();
+                                if (status.equals("new")) {
+                                    authob.delAuthCode(clientid, "authcode", authcode);
+                                }
+                                jobj.put("idtoken", idtok);
+                                jobj.put("clientid", clientid);
+                                jobj.put("scope", scope);
+                            } else {
+                                jobj.put("error", "invalid request");
+                                jobj.put("desc", "invalid signature");
+                            }
+                        } else {
+                            jobj.put("error", "invalid request");
+                            jobj.put("desc", "invalid clientsecret");
                         }
-                        jobj.put("idtoken", idtok);
-                        jobj.put("clientid", clientid);
-                        jobj.put("scope", scope);
-
                     } else {
                         jobj.put("error", "invalid request");
-                        jobj.put("desc", "invalid clientsecret");
+                        jobj.put("desc", "invalid  authcode");
                     }
                 } else {
                     jobj.put("error", "invalid request");
-                    jobj.put("desc", "invalid  authcode");
+                    jobj.put("desc", "invalid  scope");
                 }
             } else {
                 jobj.put("error", "invalid request");
-                jobj.put("desc", "invalid  scope");
+                jobj.put("desc", "invalid clientid");
             }
-        } else {
-            jobj.put("error", "invalid request");
-            jobj.put("desc", "invalid clientid");
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
         out.println(jobj);
+        System.out.println(jobj);
     }
 }

@@ -94,6 +94,7 @@ public class AuthCodeGen {
         Loggen logob = new Loggen();
         try{
             String query = String.format("delete from %s where clientid = '%s';",tokentype,clientid);
+            //String query = String.format("update userinfo set ac = '%s' where userkey = '%s';",userkey);
             System.out.println(query);
             stmt = con.createStatement();
             stmt.executeUpdate(query);
@@ -114,7 +115,8 @@ public class AuthCodeGen {
         String time = String.valueOf(System.currentTimeMillis());
         Statement stmt;
         try{
-            String query = String.format("insert into authcode(authcode,time,clientid,userkey) values('%s','%s','%s','%s');",authcode,time,clientid,userkey);
+            //String query = String.format("insert into authcode(authcode,time,clientid,userkey) values('%s','%s','%s','%s');",authcode,time,clientid,userkey);
+            String query = String.format("update userinfo set ac = '%s' where userkey = '%s';",authcode,userkey);
             stmt = con.createStatement();
             stmt.executeUpdate(query);
             return authcode;

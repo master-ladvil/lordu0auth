@@ -54,6 +54,9 @@ public class IdTokenGen {
     public String b64(String key) {
         return Base64.getUrlEncoder().encodeToString(key.getBytes(StandardCharsets.UTF_8));
     }
+    public byte[] b64decode(String code){
+        return Base64.getUrlDecoder().decode(code);
+    }
 
     public String hmacsha256(String data, String clientsecret) {
         try {

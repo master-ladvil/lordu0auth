@@ -50,7 +50,8 @@ public class Elloauth extends HttpServlet {
     
     
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-       AuthCodeGen authob = new AuthCodeGen(); 
+       System.out.println("inside get of elloauth");
+        AuthCodeGen authob = new AuthCodeGen(); 
        String url = null;
        String authcode = null;
        String clientId = Auth.client;
@@ -63,7 +64,7 @@ public class Elloauth extends HttpServlet {
        
 		PrintWriter out = response.getWriter();
         JSONObject jobj = new JSONObject();
-        if(authob.checkdb("clientid","idsec",clientId)){
+        if(authob.checkdb("clientid","keys",clientId)){
             if(authob.checkdb("scopename","scopes",scope)){
                 authcode = authob.genAuthCode(clientId+scope+redirect+time,clientId,userkey);
                 url = redirect+"?authcode="+authcode+"&clientid="+clientId+"&scope="+scope;
@@ -80,15 +81,17 @@ public class Elloauth extends HttpServlet {
             jobj.put("Error","invalid request");
             jobj.put("desc","invalid Client Id");
         }
-        Loggen logob = new Loggen();
-        logob.addToLog("authcode", authcode, String.valueOf(System.currentTimeMillis()), clientId, "granted");
+        //Loggen logob = new Loggen();
+        //logob.addToLog("authcode", authcode, String.valueOf(System.currentTimeMillis()), clientId, "granted");
+        System.out.println("jobj-> "+jobj);
         response.addHeader("Access-Control-Allow-Origin","*"); 
 		response.setContentType("text/html");
         response.sendRedirect(url);
-        //out.println(jobj);
+        
     }
 
     public void doPost(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException{
+        System.out.println("inside post of elloauth...");
         IdTokenGen idob = new IdTokenGen();
         String idtok = null;
         String authcode = request.getParameter("authcode");
@@ -102,7 +105,8 @@ public class Elloauth extends HttpServlet {
         JSONObject jobj = new JSONObject();
 		PrintWriter out = response.getWriter();
         AuthCodeGen authob = new AuthCodeGen();
-        if(authob.checkdb("clientid", "idsec", clientid)){
+        System.out.println("starting check");
+        if(authob.checkdb("clientid", "keys", clientid)){
             if(authob.checkdb("scopename", "scopes", scope)){
                 if(authob.checkdb("authcode","authcode" , authcode)){
                     if(authob.checkdb("clientsecret", "idsec", clientsecret)){
