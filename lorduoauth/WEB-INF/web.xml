@@ -71,4 +71,20 @@
 		<servlet-name>Rooms</servlet-name>
 		<url-pattern>/Rooms</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>AvailableRoomsResources</servlet-name>
+		<servlet-class>AvailableRoomsResources</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>AvailableRoomsResources</servlet-name>
+		<url-pattern>/AvailableRoomsResources</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserReservedRooms</servlet-name>
+		<servlet-class>UserReservedRooms</servlet-class>
+	</servlet>
+    <servlet-mapping>
+		<servlet-name>UserReservedRooms</servlet-name>
+		<url-pattern>/UserReservedRooms</url-pattern>
+	</servlet-mapping>
 </web-app>

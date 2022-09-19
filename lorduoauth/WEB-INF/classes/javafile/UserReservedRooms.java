@@ -9,37 +9,33 @@ import java.util.*;
 import org.json.simple.parser.JSONParser;
 import java.text.*;
 
-public class Rooms extends HttpServlet {
-  
+public class UserReservedRooms extends HttpServlet {
 
-   
-        
-    public boolean checkscope(String accesstoken)throws Exception{
+    public boolean checkscope(String accesstoken) throws Exception {
         OauthResources orob = new OauthResources();
         System.out.println("checking scope........." + accesstoken);
         boolean result = false;
         ResultSet rs = orob.checkat(accesstoken);
-        if(rs != null){
+        if (rs != null) {
             String scope = rs.getString("scope");
-            System.out.println("\n\nscope assigned for at -> "+scope+"\n\n");
+            System.out.println("\n\nscope assigned for at -> " + scope + "\n\n");
             String[] chunks = scope.split("\\.");
-            for (int i =0 ;i<chunks.length;i++){
-                if(chunks[i].equals("userrooms")){
+            for (int i = 0; i < chunks.length; i++) {
+                if (chunks[i].equals("userrooms")) {
                     result = true;
-                   
+
                     break;
                 }
                 System.out.println(chunks[i] + " -> " + result);
             }
-        } 
-        System.out.println("result -> "+result);       
+        }
+        System.out.println("result -> " + result);
         return result;
     }
-    
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            RoomsDb rdb = new RoomsDb();
+            UserReservedRoomsDb urob = new UserReservedRoomsDb();
             response.setContentType("text/json");
             response.addHeader("Access-Control-Allow-Origin", "*");
             PrintWriter out = response.getWriter();
@@ -51,7 +47,9 @@ public class Rooms extends HttpServlet {
                 boolean isAccess = atob.verify(accesstoken);
                 boolean isScope = checkscope(accesstoken);
                 if (isAccess && isScope) {
-                    rdb.showRooms(response);
+                    List<JSONObject> myrooms = urob.getReservedRoom(accesstoken);
+                    out.println(myrooms);
+                    System.out.println(myrooms);
                 } else {
                     out.println("noaccess");
                 }
@@ -61,7 +59,6 @@ public class Rooms extends HttpServlet {
         }
 
     }
-
     
-
+      
 }
