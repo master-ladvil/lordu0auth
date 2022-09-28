@@ -38,7 +38,6 @@ public class AvailableRoomsResources extends HttpServlet {
             for (int i = 0; i < chunks.length; i++) {
                 if (chunks[i].equals("userrooms")) {
                     result = true;
-
                     break;
                 }
                 System.out.println(chunks[i] + " -> " + result);
@@ -55,8 +54,8 @@ public class AvailableRoomsResources extends HttpServlet {
             AccessToken atob = new AccessToken();
             // boolean isAccess = atob.verify(accesstoken);
             boolean isAccess = true;
-            // boolean isScope = checkscope(accesstoken);
-            boolean isScope = true;
+            boolean isScope = checkscope(accesstoken);
+            
             response.setContentType("text/plain");
             PrintWriter out = response.getWriter();
             if (isAccess && isScope) {
@@ -90,6 +89,7 @@ public class AvailableRoomsResources extends HttpServlet {
             UserReservedRoomsDb udb = new UserReservedRoomsDb();
             AvailableRooms adb = new AvailableRooms();
             boolean isAccess = atob.verify(accesstoken);
+            boolean isScope = checkscope(accesstoken);
             if (isAccess) {
                 String name = udb.getname(accesstoken);
                 String clid = udb.getClid(name);
