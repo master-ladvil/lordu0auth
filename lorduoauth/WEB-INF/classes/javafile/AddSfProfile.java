@@ -18,9 +18,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
 import javax.servlet.ServletException;
 
-public class SubmitUser extends HttpServlet {
+public class AddSfProfile extends HttpServlet {
     public static Connection dbcon;
-    public SubmitUser(){
+    public AddSfProfile(){
         try {
             System.out.println("[+]inside getuser constructor..");
             Class.forName("org.postgresql.Driver");
@@ -35,55 +35,21 @@ public class SubmitUser extends HttpServlet {
         }
     }
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String lastname = request.getParameter("lastname");
-        String firstname = request.getParameter("firstname");
-        String email = request.getParameter("email");
-        String isactive = request.getParameter("isactive");
-        String alias = request.getParameter("alias");
-        String timezone = request.getParameter("timezone");
-        String local = request.getParameter("local");
-        String emailencode = request.getParameter("emailencode");
-        String profileid = request.getParameter("profileid");
-        String langkey = request.getParameter("langkey");
-        String manager = "null";
-        String roleid = "000000000000000";
-        
-        
-        System.out.println("\n" + username + "\n" + lastname + "\n" + firstname + "\n" + email + "\n" + isactive + "\n"
-                + alias + "\n" + timezone + "\n" + local + "\n" + emailencode + "\n" + profileid + "\n" + langkey);
-        
-
-
-
+        String profile = request.getParameter("name");
+        String id = null; 
+        System.out.println("profilename-> "+profile);
         // creating jsonbody
         JSONObject job = new JSONObject();
-        job.put("Username", username);
-        job.put("LastName", lastname);
-        job.put("FirstName", firstname);
-        job.put("Email", email);
-        job.put("isActive", isactive);
-        job.put("Alias", alias);
-        job.put("TimeZoneSidKey", timezone);
-        job.put("LocaleSidKey", local);
-        job.put("EmailEncodingKey", emailencode);
-        job.put("ProfileId", profileid);
-        job.put("LanguageLocaleKey", langkey);
-
-       
-       //addtodb
-       
-       
-       
-       
-       
+        job.put("Name", profile);
+        job.put("UserLicenseId","1005g000003v7ufAAA" );
+        System.out.println("\n\n"+job+"\n\n");
         // getting accesstoken
         Slaesforceconnect tokob = new Slaesforceconnect();
         String accesstoken = tokob.getAccessToken();
         System.out.println("\n\n Accesstoken -> " + accesstoken + "\n\n");
 
         // creating a post request
-        String url = "https://zoho-c2-dev-ed.develop.my.salesforce.com/services/data/v54.0/sobjects/User";
+        String url = "https://zoho-c2-dev-ed.develop.my.salesforce.com/services/data/v54.0/sobjects/Profile";
         URL uri = new URL(url);
         HttpURLConnection con = (HttpURLConnection) uri.openConnection();
         con.setRequestProperty("Authorization", "Bearer " + accesstoken);
@@ -108,7 +74,7 @@ public class SubmitUser extends HttpServlet {
         try{
         JSONParser parser = new JSONParser();
         JSONObject result = (JSONObject) parser.parse(res.toString());
-        String id = result.get("id").toString();
+        id = result.get("id").toString();
         response.setContentType("text/plain");
         
         
@@ -116,7 +82,7 @@ public class SubmitUser extends HttpServlet {
         //add to db
         Statement stmt;
         try{
-            String query = String.format("insert into sfusers(id,name,alias,email,username,title,companyname,department,division,timezone,local,language,profileid,isactive,manager,roleid) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');",id,firstname+lastname,lastname,email,firstname+lastname+"@ladvil.com","lead","nazz","general","north",timezone,local,"english",profileid,isactive,manager,roleid);
+            String query = String.format("insert into profile(id,profilename) values('%s','%s');",id,profile);
             System.out.println(query);
             stmt = dbcon.createStatement();
             stmt.executeUpdate(query);

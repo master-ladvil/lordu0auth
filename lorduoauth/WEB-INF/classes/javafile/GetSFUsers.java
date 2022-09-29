@@ -32,7 +32,7 @@ public class GetSFUsers {
         ResultSet rs = null;
         List<JSONObject> userlist = null;
         try{
-            String query = String.format("select * from sfusers;");
+            String query = String.format("select sfusers.id,name,alias,email,username,title,companyname,department,division,timezone,local,language,manager,rolename,profilename,isactive from sfusers join role on sfusers.roleid = role.id join profile on sfusers.profileid = profile.id;");
             stmt = con.createStatement();
             rs = stmt.executeQuery(query);
             userlist = Tojasonrs.getResultSet(rs);
@@ -40,5 +40,20 @@ public class GetSFUsers {
             System.out.println(e);
         }
         return userlist;
+    }
+    public List<JSONObject> getprofilenames(){
+        Statement stmt;
+        ResultSet rs =null;
+        List<JSONObject> profilelist = null;
+        try{    
+            String query = String.format("select * from profile");
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            profilelist = Tojasonrs.getResultSet(rs);
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return profilelist;
     }
 }

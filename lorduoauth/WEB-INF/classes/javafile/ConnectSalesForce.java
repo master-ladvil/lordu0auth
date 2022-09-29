@@ -67,46 +67,25 @@ public class ConnectSalesForce extends HttpServlet {
             } else {
                 System.out.println("GET request not worked");
             }
-            String baseuri = instanceurl + REST_ENDPOINT + API_VERSION;
-            String url = baseuri
-                    + "/query?q=select+Id,FirstName,LastName,UserName,CompanyName,Division,Department,Email,Phone+from+User";
-            System.out.println("\n\nQuery -> " + url + "\n\n");
-            URL url2 = new URL(url);
-            HttpURLConnection connn = (HttpURLConnection) url2.openConnection();
-            connn.setRequestMethod("GET");
-            connn.setRequestProperty("Authorization", "Bearer " + accesstoken);
-            connn.setRequestProperty("Content-Type", "application/json");
-            responseCode = connn.getResponseCode();
-            System.out.println("GET Response Code :: " + responseCode);
-            if (responseCode == HttpURLConnection.HTTP_OK) { // success
-                BufferedReader in = new BufferedReader(new InputStreamReader(
-                        connn.getInputStream()));
-                String inputLine;
-                StringBuffer res = new StringBuffer();
+            GetSFUsers get = new GetSFUsers();
+            List<JSONObject> resJsonList = get.getsfusers();
+            System.out.println(resJsonList);
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            out.println(resJsonList);
 
-                while ((inputLine = in.readLine()) != null) {
-                    res.append(inputLine);
-                }
-                in.close();
-                JSONParser parser = new JSONParser();
-                JSONObject job = (JSONObject) parser.parse(res.toString());
-                List<JSONObject> resJsonList = (List<JSONObject>) job.get("records");
-                for (int i = 0; i < resJsonList.size(); i++) {
-                    JSONObject jj = (JSONObject) resJsonList.get(i);
-                    jj.put("id",i);
-                    System.out.println(resJsonList.get(i));
-                }
-                response.addHeader("Access-Control-Allow-Origin", "*");
-                out.println(resJsonList);
-
-            } else {
-                System.out.println("GET request not worked");
-                response.addHeader("Access-Control-Allow-Origin", "*");
-                out.println("failed");
-            }
         } catch (Exception e) {
             System.out.println(e);
         }
 
+    }
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException,IOException {
+        GetSFUsers profob = new GetSFUsers();
+        List<JSONObject> profiles = profob.getprofilenames();
+        System.out.println(profiles);
+        response.setContentType("text/plain");
+        PrintWriter out = response.getWriter();
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        out.println(profiles);
     }
 }
