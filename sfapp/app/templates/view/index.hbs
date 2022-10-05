@@ -1,0 +1,46 @@
+
+<main class="conttainer mt-5 ">
+<h3><center>SalesForcce Users</center></h3>
+<container class="cond">
+<table class = "table table-sm">
+  <thead class="thead">
+    <tr>
+      <th><td>Id</td></th>
+      <th><td>name</td></th>
+      <th><td>email</td></th>
+      <th><td>username</td></th>
+      <th><td>title</td></th>
+      <th><td>companyname</td></th>
+      <th><td>department</td></th>
+      <th><td>division</td></th>
+      <th><td>timezone</td></th>
+      <th><td>rolename</td></th>
+      <th><td>profile</td></th>
+      <th><td>isactive?</td></th>
+
+    </tr>
+  </thead>
+  <tbody>
+   
+    {{#each this.model as |row|}}  
+      <tr>
+        <td>{{row.id}}</td>
+        <td>{{row.name}}</td>
+        <td>{{row.email}}</td>
+        <td>{{row.username}}</td>
+        <td>{{row.title}}</td>
+        <td>{{row.companyname}}</td>
+        <td>{{row.department}}</td>
+        <td>{{row.division}}</td>
+        <td>{{row.timezone}}</td>
+        <td>{{row.rolename}}</td>
+        <td>{{row.profilename}}</td>
+        <td>{{row.isactive}}</td> 
+      </tr>
+    {{/each}}
+    
+  </tbody>
+</table>
+</container>
+</main>
+{{outlet}}

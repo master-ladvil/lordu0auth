@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand">Admin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="http://localhost:4200/">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="http://localhost:4200/add">Add</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="http://localhost:4200/adddbuser">Addb</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="http://localhost:4200/map">Map(current)</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<table class="table">
+    <th>
+    <td>Sf</td>
+    </th>
+    <th>
+    <td>Db</td>
+    </th>
+
+    <tbody id = "map">
+        {{#each this.model.map as |row|}}
+        <tr>
+            <td>
+                <select class = "sfselect">
+                    <option value = {{row.map1}} selected>{{row.map1}}</option>
+                    {{#each this.model.sf as |mp|}}
+                        <option value = {{mp.attrname}}>{{mp.attrname}}</option>
+                    {{/each}}
+                </select>
+            </td>
+            <td>
+                <select class = "dbselect">
+                    <option value = {{row.map2}} selected>{{row.map2}}</option>
+                    {{#each this.model.db as |mp|}}
+                        <option value = {{mp.attrname}}>{{mp.attrname}}</option>
+                    {{/each}}
+                </select>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<button class = "btn btn-sm btn-primary" type="button" {{action "submit"}}>Submit</button>
+<button class = "btn btn-success btn-sm" onclick = {{action "get"}} type="button">Add another</button>
+{{outlet}}
