@@ -56,4 +56,143 @@ public class GetSFUsers {
         }
         return profilelist;
     }
+    public void addperm(String name){
+        Statement stmt;
+        try{
+            String query = String.format("insert into permissions(perm) values('%s');",name);
+            System.out.println("Query -> "+ query);
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    public List<JSONObject> getperm(){
+        Statement stmt;
+        ResultSet rs = null;
+        try{
+            String query = String.format("select * from permissions;");
+            System.out.println("Query -> " + query);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            List<JSONObject> permissions = Tojasonrs.getResultSet(rs);
+            return permissions;
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+    public List<JSONObject> getRole(){
+        Statement stmt;
+        ResultSet rs = null;
+        try{
+            String query = String.format("select * from role;");
+            System.out.println("Query -> " + query);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            List<JSONObject> role = Tojasonrs.getResultSet(rs);
+            return role;
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+    public void adddbuser(String name,String email,String timezone,String locale,String languange,String dpt,String div,String tit,String mobile,String semail){
+        Statement stmt;
+        try{
+            String query = String.format("insert into sfcloneuser(name,email,timezone,locale,language,department,division,title,mobile,semail) values( '%s','%s','%s','%s','%s','%s','%s','%s','%s','%s' );",name,email,timezone,locale,languange,dpt,div,tit,mobile,semail);
+            System.out.println("Query -> "+ query);
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    public List<JSONObject> getclone(){
+        Statement stmt;
+        ResultSet rs = null;
+        try{
+            String query = String.format("select * from sfcloneuser;");
+            System.out.println("Query -> " + query);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            List<JSONObject> role = Tojasonrs.getResultSet(rs);
+            return role;
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+    public List<JSONObject> getsfattr(){
+        Statement stmt;
+        ResultSet rs = null;
+        try{
+            String query = String.format("select * from sfattr;");
+            System.out.println("Query -> " + query);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            List<JSONObject> role = Tojasonrs.getResultSet(rs);
+            return role;
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+    public List<JSONObject> getdbattr(){
+        Statement stmt;
+        ResultSet rs = null;
+        try{
+            String query = String.format("select * from dbattr;");
+            System.out.println("Query -> " + query);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            List<JSONObject> role = Tojasonrs.getResultSet(rs);
+            return role;
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public List<JSONObject> getmaps(){
+        Statement stmt;
+        ResultSet rs = null;
+        try{
+            String query = String.format("select * from maps;");
+            System.out.println("Query -> " + query);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+            List<JSONObject> role = Tojasonrs.getResultSet(rs);
+            return role;
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+    public void delmap(){
+        Statement stmt;
+        try{
+            String query = String.format("delete from maps;");
+            System.out.println("Query -> "+ query);
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    public void addmap(String m1,String m2){
+        Statement stmt;
+        try{
+            String query = String.format("insert into maps(map1,map2) values('%s','%s');",m1,m2);
+            System.out.println("Query -> "+ query);
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
 }

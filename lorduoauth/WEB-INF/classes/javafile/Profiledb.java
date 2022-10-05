@@ -28,7 +28,7 @@ public class Profiledb {
         }
     }
 
-    public static void main(String args[]) throws Exception {
+    public static void sync() throws Exception {
         Profiledb pro = new Profiledb();
         Slaesforceconnect tokob = new Slaesforceconnect();
         String accesstoken = tokob.getAccessToken();
@@ -53,6 +53,7 @@ public class Profiledb {
             }
             in.close();
             try {
+                pro.delsfuser();
                 JSONParser parser = new JSONParser();
                 JSONObject job = (JSONObject) parser.parse(res.toString());
                 List<JSONObject> profile = (List<JSONObject>) job.get("records");
@@ -102,6 +103,17 @@ public class Profiledb {
             stmt.executeUpdate(query);
         } catch (Exception e) {
             System.out.println("\n\n\n\n"+e+"\n\n\n\n");
+        }
+    }
+    public void delsfuser(){
+        Statement stmt;
+        try{
+            String delq = String.format("delete from sfusers;");
+            System.out.println("Query - > " + delq);
+            stmt = con.createStatement();
+            stmt.executeUpdate(delq);
+        }catch(Exception e){
+            System.out.println(e);
         }
     }
 }

@@ -18,9 +18,9 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
 import javax.servlet.ServletException;
 
-public class AddSfProfile extends HttpServlet {
+public class AddSfRoles extends HttpServlet {
     public static Connection dbcon;
-    public AddSfProfile(){
+    public AddSfRoles(){
         try {
             System.out.println("[+]inside getuser constructor..");
             Class.forName("org.postgresql.Driver");
@@ -35,15 +35,12 @@ public class AddSfProfile extends HttpServlet {
         }
     }
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String profile = request.getParameter("name");
-        String permissions = request.getParameter("perm");
+        String role = request.getParameter("name");
         String id = null; 
-        System.out.println("profilename-> "+profile);
+        System.out.println("profilename-> "+role);
         // creating jsonbody
         JSONObject job = new JSONObject();
-        job.put("Name", profile);
-        job.put("UserLicenseId","1005g000003v7ufAAA" );
-        job.put(permissions,"true");
+        job.put("Name", role);
         System.out.println("\n\n"+job+"\n\n");
         // getting accesstoken
         Slaesforceconnect tokob = new Slaesforceconnect();
@@ -51,7 +48,7 @@ public class AddSfProfile extends HttpServlet {
         System.out.println("\n\n Accesstoken -> " + accesstoken + "\n\n");
 
         // creating a post request
-        String url = "https://zoho-c2-dev-ed.develop.my.salesforce.com/services/data/v54.0/sobjects/Profile";
+        String url = "https://zoho-c2-dev-ed.develop.my.salesforce.com/services/data/v54.0/sobjects/UserRole";
         URL uri = new URL(url);
         HttpURLConnection con = (HttpURLConnection) uri.openConnection();
         con.setRequestProperty("Authorization", "Bearer " + accesstoken);
@@ -79,12 +76,10 @@ public class AddSfProfile extends HttpServlet {
         id = result.get("id").toString();
         response.setContentType("text/plain");
         
-        
-        //add to db
         //add to db
         Statement stmt;
         try{
-            String query = String.format("insert into profile(id,profilename) values('%s','%s');",id,profile);
+            String query = String.format("insert into role(id,rolename) values('%s','%s');",id,role);
             System.out.println(query);
             stmt = dbcon.createStatement();
             stmt.executeUpdate(query);

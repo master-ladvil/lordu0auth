@@ -1,4 +1,4 @@
-"PermissionsEmailSingle"
+    "PermissionsEmailSingle"
     "PermissionsEmailMass"
     "PermissionsEditTask"
     "PermissionsEditEvent"
@@ -31,7 +31,7 @@
     "PermissionsViewEncryptedData"
     "PermissionsEditBrandTemplates"
     "PermissionsEditHtmlTemplates"
-    "PermissionsChatterInternalUser
+    "PermissionsChatterInternalUser"
     "PermissionsManageEncryptionKeys"
     "PermissionsDeleteActivatedContract"
     "PermissionsChatterInviteExternalUsers"
